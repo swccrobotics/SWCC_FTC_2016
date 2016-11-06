@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.util.Range;
 public class LauncherCheck extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private LauncherCheckHW robot           = new RobotCheckoutHW();   // Use the hardware assigned in the RobotCheckoutHW class
+    private LauncherCheckHW robot = new LauncherCheckHW();   // Use the hardware assigned in the RobotCheckoutHW class
     private final static double[] LauncherSpeed = {0.2, 0.4, 0.6, 0.8, 1.0}; // Options for speed of ball launcher
     private int LaunchSpeedIdx = 0;
     private boolean LauncherState = false; // false for off, true for on.
