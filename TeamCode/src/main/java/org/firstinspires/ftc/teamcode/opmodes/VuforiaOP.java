@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.google.blocks.ftcrobotcontroller.BlocksActivity;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.HINT;
 import com.vuforia.Vuforia;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.R;
 
 /**
  * Created by GE on 10/25/2016.
- */
+
 
 public class VuforiaOP extends LinearOpMode {
     @Override
@@ -28,8 +29,8 @@ public class VuforiaOP extends LinearOpMode {
         VuforiaTrackables beacons = vuforia.loadTrackablesFromAsset("FTC_2016-17");
         beacons.get(0).setName('Wheels');
         beacons.get(1).setName('Tools');
-        beacons.get(0).setName('Lego');
-        beacons.get(0).setName('Gears');
+        beacons.get(2).setName('Lego');
+        beacons.get(3).setName('Gears');
 
 
         waitForStart();
@@ -43,3 +44,4 @@ public class VuforiaOP extends LinearOpMode {
         for(lat 1-)
     }
 }
+**/

@@ -1,36 +1,30 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is NOT an opmode. This class is used to define all the specific hardware for a single robot.
  *
- * Motor Controller 1, Channel 1:  Left Launcher Motor:        "DriveLeft"
- * Motor Controller 1, Channel 2:  Right Launcher Motor:       "DriveRight"
-
- *
- * To be implemented later.....
- * Phone Camera
- * IR Seeker
- * Distance Sensor
- *
+ * Motor Controller 1, Channel 1:  Left Drive Motor:        "DriveLeft"
+ * Motor Controller 1, Channel 2:  Right Drive Motor:       "DriveRight"
+ * Motor Controller 2, Channel 1:  Ball Conveyor:            "Conveyor"
  */
-public class LauncherCheckHW
+public class Nov12SkirmishHW
 {
     /* Public OpMode members. */
-    public DcMotor BallLauncherLeft = null;
-    public DcMotor BallLauncherRight = null;
+    public DcMotor DriveLeft = null;
+    public DcMotor DriveRight = null;
+    public DcMotor Conveyor = null;
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public LauncherCheckHW(){
+    public Nov12SkirmishHW(){
 
     }
 
@@ -40,14 +34,17 @@ public class LauncherCheckHW
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        BallLauncherLeft  = hwMap.dcMotor.get("BallLauncherLeft");
-        BallLauncherLeft.setDirection(DcMotor.Direction.FORWARD);
-        BallLauncherRight  = hwMap.dcMotor.get("BallLauncherRight");
-        BallLauncherRight.setDirection(DcMotor.Direction.REVERSE);
+        DriveLeft = hwMap.dcMotor.get("DriveLeft");
+        DriveLeft.setDirection(DcMotor.Direction.FORWARD);
+        DriveRight  = hwMap.dcMotor.get("DriveRight");
+        DriveRight.setDirection(DcMotor.Direction.REVERSE);
+        Conveyor = hwMap.dcMotor.get("Conveyor");
+        Conveyor.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
-        BallLauncherLeft.setPower(0);
-        BallLauncherRight.setPower(0);
+        DriveLeft.setPower(0);
+        DriveRight.setPower(0);
+        Conveyor.setPower(0);
     }
 
     /***
