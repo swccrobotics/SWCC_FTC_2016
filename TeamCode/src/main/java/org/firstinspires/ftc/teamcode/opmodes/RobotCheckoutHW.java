@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
@@ -14,14 +15,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Motor Controller 2, Channel 1:  Conveyer Belt Motor:     "Conveyer"
  * Motor Controller 2, Channel 2:  Ball Launcher Motor:     "BallLauncher"
  *
- * Servo Controller, Channel 1:    Ball Platform Servo:     "Platform"
- * Servo Controller, Channel 2:    Left Beacon Arm:         "ArmLeft"
- * Servo Controller, Channel 3:    Right Beacon Arm:        "ArmRight"
+ * Servo Controller, Channel 1:    Beacon Arm:              "BeaconArm"
+ * Servo Controller, Channel 2:    Catapult Trigger:        "LaunchTrigger"
  *
- * To be implemented later.....
- * Phone Camera
- * IR Seeker
- * Distance Sensor
  *
  */
 public class RobotCheckoutHW
@@ -31,9 +27,8 @@ public class RobotCheckoutHW
     public DcMotor DriveRight = null;
     public DcMotor Conveyor = null;
     public DcMotor BallLauncher = null;
-    public Servo Platform = null;
-    public Servo ArmLeft = null;
-    public Servo ArmRight = null;
+    public Servo BeaconArm = null;
+    public Servo LaunchTrigger = null;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -52,12 +47,12 @@ public class RobotCheckoutHW
         // Define and Initialize Motors
         DriveLeft  = hwMap.dcMotor.get("DriveLeft");
         DriveLeft.setDirection(DcMotor.Direction.FORWARD);
-        DriveRight = hwMap.dcMotor.get("RightWheel");
+        DriveRight = hwMap.dcMotor.get("DriveRight");
         DriveRight.setDirection(DcMotor.Direction.REVERSE);
         Conveyor  = hwMap.dcMotor.get("Conveyor");
-        Conveyor.setDirection(DcMotor.Direction.FORWARD);
+        Conveyor.setDirection(DcMotor.Direction.REVERSE);
         BallLauncher  = hwMap.dcMotor.get("BallLauncher");
-        BallLauncher.setDirection(DcMotor.Direction.FORWARD);
+        BallLauncher.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         DriveLeft.setPower(0);
@@ -69,12 +64,12 @@ public class RobotCheckoutHW
         DriveLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         DriveRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Conveyor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        BallLauncher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BallLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Define and Initialize Servos
-        Platform = hwMap.servo.get("Platform");
-        ArmLeft = hwMap.servo.get("ArmLeft");
-        ArmRight = hwMap.servo.get("ArmRight");
+        BeaconArm = hwMap.servo.get("BeaconArm");
     }
 
     /***
