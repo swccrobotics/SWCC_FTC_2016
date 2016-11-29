@@ -27,7 +27,8 @@ public class RobotCheckout extends LinearOpMode {
     private RobotCheckoutHW robot           = new RobotCheckoutHW();   // Use the hardware assigned in the RobotCheckoutHW class
     private final static double CONVEYOR_POWER = 1.0; // Ball conveyor operating power (0 to 1).
     private final static double BEACON_EXTEND = 0.35; // This is the value that the beacon-pushing arm goes to to press the button.
-    private final static double BEACON_RETRACT = 0.95; // This is the retracted value for the beacon arm.
+  //  private final static double BEACON_RETRACT = 0.95; // This is the retracted value for the beacon arm.
+    private final static double BEACON_RETRACT = 0.05; // This is the retracted value for the beacon arm.
     private final static int BUTTON_DEBOUNCE = 5; // Number of cycles to ignore a button press to avoid repeating actions.
     private final static int ENCODER_TICKS = 4150; // Number of encoder ticks per motor revolution.
 
