@@ -34,6 +34,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.IrSeekerSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
 /*
@@ -49,12 +50,15 @@ import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 public class DistanceSensorCheckout extends LinearOpMode {
 
   OpticalDistanceSensor odsSensor;  // Hardware Device Object
+  IrSeekerSensor irSeeker;    // Hardware Device Object
 
   @Override
   public void runOpMode() throws InterruptedException {
 
     // get a reference to our Light Sensor object.
     odsSensor = hardwareMap.opticalDistanceSensor.get("ods");
+    // get a reference to our GyroSensor object.
+    irSeeker = hardwareMap.irSeekerSensor.get("seeker");
 
     // wait for the start button to be pressed.
     waitForStart();
@@ -66,6 +70,20 @@ public class DistanceSensorCheckout extends LinearOpMode {
       // send the info back to driver station using telemetry function.
       telemetry.addData("Raw",    odsSensor.getRawLightDetected());
       telemetry.addData("Normal", odsSensor.getLightDetected());
+
+      // Ensure we have a IR signal
+      if (irSeeker.signalDetected())
+      {
+        // Display angle and strength
+        telemetry.addData("Angle",    irSeeker.getAngle());
+        telemetry.addData("Strength", irSeeker.getStrength());
+      }
+      else
+      {
+        // Display loss of signal
+        telemetry.addData("Seeker", "Signal Lost");
+      }
+
 
       telemetry.update();
       idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
