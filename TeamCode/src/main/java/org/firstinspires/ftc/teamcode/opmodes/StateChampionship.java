@@ -35,6 +35,7 @@ public class StateChampionship extends LinearOpMode {
     private boolean ConveyorState = false; // false for off, true for on.
     private int ConveyorDirection = 1; // 1 for bring ball in, -1 for spit ball out.
     private int LauncherMotorPosition = 0; // This will reflect the encoder ticks of the Launcher.
+    private boolean LauncherReady = false; // This gets set true when the launcher is ready to fire.
 
 
     private double ServoPos = 0; //TEST DELETE THIS
@@ -42,9 +43,10 @@ public class StateChampionship extends LinearOpMode {
     private double GP2ADebounce = 0; // Gamepad2.a debounce. If this value is not zero, the program ignores the button press.
     private double  GP2YDebounce = 0; // Gamepad2.y debounce.
     private double ODS_Filtered = 0; // This is the filtered/averaged value from the distance sensor.
-    private double[] ODS_Values; // This is the array that holds the last three ODS values.
+    private double[] ODS_Values; // This is the array that holds the last n ODS values.
 
-    private void init_ODS() {
+   /** This isn't working and needs to be fixed.
+     private void init_ODS() {
         //Create the ODS Filter Array
         for (int i=0;i<ODS_FILTER_LENGTH;i++) {
             ODS_Values[i]=robot.odsSensor.getRawLightDetected();
@@ -70,7 +72,7 @@ public class StateChampionship extends LinearOpMode {
         ODS_Filtered = ODS_Filtered/ODS_FILTER_LENGTH;
 
     }
-
+**/
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -80,7 +82,7 @@ public class StateChampionship extends LinearOpMode {
         robot.init(hardwareMap);
 
         robot.BeaconArm.setPosition(BEACON_RETRACT);
-        init_ODS();
+        //init_ODS();
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
@@ -91,7 +93,8 @@ public class StateChampionship extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            update_ODS(); // This function updates the ODS filtered value.
+            //update_ODS(); // This function updates the ODS filtered value.
+            ODS_Filtered = robot.odsSensor.getRawLightDetected();
 
             // --------GAMEPAD DEBOUNCE SECTION-----------
             if (GP2ADebounce > 0) {
@@ -114,7 +117,18 @@ public class StateChampionship extends LinearOpMode {
             // ----------SECTION FOR BALL LAUNCHER----------
             LauncherMotorPosition = -robot.BallLauncher.getCurrentPosition(); // Motor runs backwards so make the position reference positive.
 
-            robot.BallLauncher.setPower(-gamepad2.right_trigger);
+            if (gamepad1.right_bumper) {
+                robot.BallLauncher.setPower(-1); // Set to -1 because of motor orientation.
+            }
+
+            if ((ODS_Filtered>=ODS_THRESHOLD)&&(!LauncherReady)) { // If we are at the stopping point, stop!
+                robot.BallLauncher.setPower(0); // Stop the launcher at the mark on the gear.
+                LauncherReady = true;
+            }
+
+            if (ODS_Filtered<ODS_THRESHOLD) {
+                LauncherReady = false;
+            }
 
             // ----------SECTION FOR BEACON ARM---------------
             if (gamepad1.x) {
@@ -143,11 +157,6 @@ public class StateChampionship extends LinearOpMode {
 
             if (ConveyorState) {
                 robot.Conveyor.setPower(ConveyorDirection*CONVEYOR_POWER);
-
-                if (ODS_Filtered>=ODS_THRESHOLD) { // If we are at the stopping point, stop!
-                    robot.Conveyor.setPower(0);
-                    ConveyorState=false;
-                }
             } else  {
                 robot.Conveyor.setPower(0);
             }
